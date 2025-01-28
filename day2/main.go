@@ -12,10 +12,16 @@ import (
 )
 
 func main() {
+	var total int = 0
+
 	input := numberConversion(readFile("input.txt"))
 	for _, v := range input {
-		fmt.Println(checkSafety(v))
+		if checkSafety(v) {
+			total++
+		}
 	}
+
+	fmt.Println(total)
 }
 
 func readFile(fileName string) []string {
@@ -56,31 +62,57 @@ func numberConversion(numbers []string) [][]int {
 func checkSafety(input []int) bool {
 	var output bool = false
 
-	// var temp int = 0
+	if len(input) < 2 {
+		fmt.Println("Not enough elements in slice, or slice is empty.")
+		return false
+	}
 
 	if input[0] > input[1] {
-		for i := 0; i < len(input); i++ {
-			if i+1 == len(input) {
-				break
-			}
+		// Check decrease by 1, 2 or 3 and equality only
 
-			if input[i] > input[i+1] {
-				// Check decrease and equality only
-			}
-		}
-	} else if input[0] < input[1] {
 		for i := 0; i < len(input); i++ {
 			if i+1 == len(input) {
 				break
 			}
 
 			if input[i] < input[i+1] {
-				// Check increase and equality only
+				fmt.Println("Number decreased after increasing")
+				return false
+			} else {
+				if input[i]-input[i+1] == 1 || input[i]-input[i+1] == 2 || input[i]-input[i+1] == 3 {
+					output = true
+				} else {
+					fmt.Println("Number decrease more than 3")
+					return false
+				}
 			}
 		}
-	}
+	} else if input[0] < input[1] {
+		// Check increase by 1, 2 or 3 and equality only
 
-	fmt.Println()
+		for i := 0; i < len(input); i++ {
+			if i+1 == len(input) {
+				break
+			}
+
+			if input[i] > input[i+1] {
+				fmt.Println("Number increased after decreasing")
+				return false
+			} else {
+
+				if input[i+1]-input[i] == 1 || input[i+1]-input[i] == 2 || input[i+1]-input[i] == 3 {
+					output = true
+				} else {
+					fmt.Println("Number increase more than 3")
+					return false
+				}
+
+			}
+		}
+	} else {
+		fmt.Println("No increase or decrease")
+		return false
+	}
 
 	return output
 }
