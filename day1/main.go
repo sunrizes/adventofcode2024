@@ -29,6 +29,7 @@ func main() {
 	}
 
 	fmt.Println(sortAndCompare(ls, rs))
+	fmt.Println(getSimilarityScore(ls, rs))
 }
 
 func readFile(fileName string) []string {
@@ -70,4 +71,20 @@ func sortAndCompare(ls []int, rs []int) int {
 	}
 
 	return total
+}
+
+func getSimilarityScore(ls []int, rs []int) int {
+	var score int = 0
+
+	for _, lsv := range ls {
+		multiplier := 0
+		for _, rsv := range rs {
+			if lsv == rsv {
+				multiplier++
+			}
+		}
+		score += lsv * multiplier
+	}
+
+	return score
 }
