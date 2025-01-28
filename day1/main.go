@@ -4,16 +4,26 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func main() {
-	temp := readFile("input.txt")
+	input := readFile("input.txt")
 
-	for _, v := range temp {
-		fmt.Println(v)
+	var ls = []int{}
+	var rs = []int{}
+
+	for _, v := range input {
+		temp := strings.Fields(v)
+
+		ln, _ := strconv.Atoi(temp[0])
+		rn, _ := strconv.Atoi(temp[len(temp)-1])
+
+		ls = append(ls, ln)
+		rs = append(rs, rn)
 	}
 }
 
