@@ -4,8 +4,10 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -25,6 +27,8 @@ func main() {
 		ls = append(ls, ln)
 		rs = append(rs, rn)
 	}
+
+	fmt.Println(sortAndCompare(ls, rs))
 }
 
 func readFile(fileName string) []string {
@@ -44,4 +48,26 @@ func readFile(fileName string) []string {
 	}
 
 	return temp
+}
+
+func sortAndCompare(ls []int, rs []int) int {
+	slices.Sort(ls)
+	slices.Sort(rs)
+
+	var total int = 0
+	var distances = []int{}
+
+	for i := 0; i < len(ls); i++ {
+		if ls[i] >= rs[i] {
+			distances = append(distances, ls[i]-rs[i])
+		} else {
+			distances = append(distances, rs[i]-ls[i])
+		}
+	}
+
+	for _, v := range distances {
+		total += v
+	}
+
+	return total
 }
