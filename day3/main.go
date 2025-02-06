@@ -10,15 +10,15 @@ import (
 
 func main() {
 	input := readFile("input.txt")
-	fmt.Println(input)
+	fmt.Println(getMul(input))
 }
 
-func getMul(s string) bool {
+func getMul(s string) []string {
 	re := regexp.MustCompile("(?i)mul\\([A-Za-z0-9]+,[A-Za-z0-9]+\\)")
-	return re.MatchString(s)
+	return re.FindAllString(s, -1)
 }
 
-func readFile(fileName string) []string {
+func readFile(fileName string) string {
 	input, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
@@ -28,10 +28,10 @@ func readFile(fileName string) []string {
 
 	scanner := bufio.NewScanner(input)
 
-	var output = []string{}
+	var output string = ""
 
 	for scanner.Scan() {
-		output = append(output, scanner.Text())
+		output += scanner.Text()
 	}
 
 	return output
