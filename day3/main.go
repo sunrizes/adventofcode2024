@@ -9,6 +9,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -25,8 +26,37 @@ func main() {
 }
 
 func getMul(s string) []string {
-	re := regexp.MustCompile("(?i)mul\\([A-Za-z0-9]+,[A-Za-z0-9]+\\)")
-	return re.FindAllString(s, -1)
+	var output = []string{}
+
+	ignore := false
+
+	doReg := regexp.MustCompile(`do\(\)`)
+	dontReg := regexp.MustCompile(`don't\(\)`)
+
+	re := regexp.MustCompile("(?i)mul\\([0-9]+,[0-9]+\\)")
+
+	lines := strings.Split(s, "\n")
+
+	for _, line := range lines {
+		if dontReg.MatchString(line) {
+			ignore = true
+		}
+
+		if doReg.MatchString(line) {
+			ignore = false
+		}
+
+		if !ignore {
+			matches := re.FindAllString(line, -1)
+			for _, match := range matches {
+				output = append(output, match)
+			}
+		}
+	}
+
+	fmt.Println(output)
+
+	return output
 }
 
 func getMultipliers(s string) []string {
